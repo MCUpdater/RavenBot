@@ -1,36 +1,52 @@
 package org.mcupdater.ravenbot.features;
 
 import org.pircbotx.Colors;
+import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
-public enum Magic8Ball {
-    YES1(Colors.GREEN + " Signs point to yes."),
-    YES2(Colors.GREEN + " Yes."),
-    MAYBE1(Colors.YELLOW + " Reply hazy, try again."),
-    YES3(Colors.GREEN + " Without a doubt."),
-    NO1(Colors.RED + " My sources say no."),
-    YES4(Colors.GREEN + " As I see it, yes."),
-    YES5(Colors.GREEN + " You may rely on it."),
-    MAYBE2(Colors.YELLOW + " Concentrate and ask again."),
-    NO2(Colors.RED + " Outlook not so good."),
-    YES6(Colors.GREEN + " It is decidedly so."),
-    MAYBE3(Colors.YELLOW + " Better not tell you now."),
-    NO3(Colors.RED + " Very doubtful."),
-    YES7(Colors.GREEN + " Yes - definitely."),
-    YES8(Colors.GREEN + " It is certain."),
-    MAYBE4(Colors.YELLOW + " Cannot predict now."),
-    YES9(Colors.GREEN + " Most likely."),
-    MAYBE5(Colors.YELLOW + " Ask again later."),
-    NO4(Colors.RED + " My reply is no."),
-    YES10(Colors.GREEN + " Outlook good."),
-    NO5(Colors.RED + " Do not count on it.");
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-    private final String message;
+public class Magic8Ball extends ListenerAdapter {
+    private List<String> responses = new ArrayList<>();
 
-    Magic8Ball(String message) {
-        this.message = message;
+    private void initResponses() {
+        responses.add(Colors.GREEN + " Signs point to yes.");
+        responses.add(Colors.GREEN + " Yes.");
+        responses.add(Colors.YELLOW + " Reply hazy, try again.");
+        responses.add(Colors.GREEN + " Without a doubt.");
+        responses.add(Colors.RED + " My sources say no.");
+        responses.add(Colors.GREEN + " As I see it, yes.");
+        responses.add(Colors.GREEN + " You may rely on it.");
+        responses.add(Colors.YELLOW + " Concentrate and ask again.");
+        responses.add(Colors.RED + " Outlook not so good.");
+        responses.add(Colors.GREEN + " It is decidedly so.");
+        responses.add(Colors.YELLOW + " Better not tell you now.");
+        responses.add(Colors.RED + " Very doubtful.");
+        responses.add(Colors.GREEN + " Yes - definitely.");
+        responses.add(Colors.GREEN + " It is certain.");
+        responses.add(Colors.YELLOW + " Cannot predict now.");
+        responses.add(Colors.GREEN + " Most likely.");
+        responses.add(Colors.YELLOW + " Ask again later.");
+        responses.add(Colors.RED + " My reply is no.");
+        responses.add(Colors.GREEN + " Outlook good.");
+        responses.add(Colors.RED + " Do not count on it.");
     }
 
-    public String getMessage() {
-        return message;
+    public Magic8Ball() {
+        initResponses();
+    }
+
+    public String getResponse() {
+        Random rng = new Random();
+        return responses.get(rng.nextInt(responses.size()));
+    }
+
+    @Override
+    public void onGenericMessage(final GenericMessageEvent event) {
+        if (event.getMessage().startsWith(".8ball")) {
+            event.respond(getResponse());
+        }
     }
 }

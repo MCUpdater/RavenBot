@@ -1,16 +1,14 @@
 package org.mcupdater.ravenbot;
 
-import org.mcupdater.ravenbot.features.KickResponses;
+import org.mcupdater.ravenbot.features.KickHandler;
 import org.mcupdater.ravenbot.features.Magic8Ball;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.KickEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
-import java.io.Console;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
@@ -49,7 +47,9 @@ public class RavenBot extends ListenerAdapter {
                 .setLogin(settings.getLogin())
                 .setServerHostname(settings.getServer())
                 .setServerPort(settings.getPort())
-                .addListener(new RavenBot.IRCListener());
+                .addListener(new RavenBot.IRCListener())
+                .addListener(new Magic8Ball())
+                .addListener(new KickHandler());
         if (!settings.getNsPassword().isEmpty()) {
             configBuilder.setNickservPassword(settings.getNsPassword());
         }
@@ -136,6 +136,10 @@ public class RavenBot extends ListenerAdapter {
         }
     }
 
+    public void sendMessage(String target, String message) {
+        bot.sendIRC().message(target, message);
+    }
+
     private class IRCListener extends ListenerAdapter {
         private Random rng = new Random();
 
@@ -145,10 +149,27 @@ public class RavenBot extends ListenerAdapter {
                 event.respond("Pong!");
                 return;
             }
-            if (event.getMessage().startsWith(".8ball")) {
-                event.respond(Magic8Ball.values()[rng.nextInt(Magic8Ball.values().length)].getMessage());
-                return;
-            }
+            /*
+            YouTube lookup
+            Twitter lookup
+            update lastSeen
+            .tell
+            .google
+            .youtube
+            .info
+            .wiki
+            .down
+            .quote
+            .define
+            .urban
+            .curseforge
+            .seen
+            .help
+            .ann
+            .qlist
+            .ilist
+
+             */
         }
 
         @Override
@@ -161,9 +182,6 @@ public class RavenBot extends ListenerAdapter {
             }
         }
 
-        @Override
-        public void onKick(final KickEvent event) {
-            bot.sendIRC().message(event.getChannel().getName(), KickResponses.values()[rng.nextInt(KickResponses.values().length)].getMessage());
-        }
+
     }
 }

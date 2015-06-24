@@ -30,6 +30,6 @@ public class KickHandler extends ListenerAdapter {
 
     @Override
     public void onKick(final KickEvent event) {
-        RavenBot.instance.sendMessage(event.getChannel().getName(), getResponse());
+        RavenBot.getInstance().sendMessage(event.getChannel().getName(), getResponse());
     }
 }

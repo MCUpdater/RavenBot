@@ -2,10 +2,12 @@ package org.mcupdater.ravenbot;
 
 import org.mcupdater.ravenbot.features.KickHandler;
 import org.mcupdater.ravenbot.features.Magic8Ball;
+import org.mcupdater.ravenbot.features.TellHandler;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -13,8 +15,8 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-public class RavenBot extends ListenerAdapter {
-    public static RavenBot instance;
+public class RavenBot {
+    private static RavenBot instance;
     protected PircBotX bot;
     protected Connection connection = null;
     protected List<String> ops = new ArrayList<>();
@@ -49,7 +51,8 @@ public class RavenBot extends ListenerAdapter {
                 .setServerPort(settings.getPort())
                 .addListener(new RavenBot.IRCListener())
                 .addListener(new Magic8Ball())
-                .addListener(new KickHandler());
+                .addListener(new KickHandler())
+                .addListener(new TellHandler());
         if (!settings.getNsPassword().isEmpty()) {
             configBuilder.setNickservPassword(settings.getNsPassword());
         }
@@ -76,6 +79,10 @@ public class RavenBot extends ListenerAdapter {
         } catch (IOException | IrcException e) {
             e.printStackTrace();
         }
+    }
+
+    public static RavenBot getInstance() {
+        return instance;
     }
 
     private void loadOps() {
@@ -140,11 +147,18 @@ public class RavenBot extends ListenerAdapter {
         bot.sendIRC().message(target, message);
     }
 
+    public PreparedStatement getPreparedStatement(String statement) throws Exception {
+        if (!preparedStatements.containsKey(statement)) {
+            throw new Exception("Invalid statement!");
+        }
+        return preparedStatements.get(statement);
+    }
+
     private class IRCListener extends ListenerAdapter {
         private Random rng = new Random();
 
         @Override
-        public void onGenericMessage(final GenericMessageEvent event) {
+        public void onMessage(final MessageEvent event) {
             if (event.getMessage().startsWith(".ping")) {
                 event.respond("Pong!");
                 return;
@@ -181,7 +195,6 @@ public class RavenBot extends ListenerAdapter {
                 event.respond("You are not my master!");
             }
         }
-
 
     }
 }

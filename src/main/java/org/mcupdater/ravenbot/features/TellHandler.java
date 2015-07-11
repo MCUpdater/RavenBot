@@ -20,9 +20,17 @@ public class TellHandler extends ListenerAdapter {
             try {
                 PreparedStatement addTell = RavenBot.getInstance().getPreparedStatement("addTell");
                 String[] splitMessage = event.getMessage().split(" ");
+                if (splitMessage.length == 1) {
+                    event.respond("Who did you want to tell?");
+                    return;
+                }
+                String recipient = splitMessage[1];
+                if (splitMessage.length == 2) {
+                    event.respond("What did you want to say to " + recipient + "?");
+                    return;
+                }
 
                 String channel = event.getChannel().getName();
-                String recipient = splitMessage[1];
                 String message = StringUtils.join(splitMessage," ", 2, splitMessage.length);
 
                 addTell.setString(1, sender.getNick());

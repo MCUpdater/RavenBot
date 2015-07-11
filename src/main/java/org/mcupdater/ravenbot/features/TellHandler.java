@@ -45,6 +45,7 @@ public class TellHandler extends ListenerAdapter {
             }
             PreparedStatement clearTells = RavenBot.getInstance().getPreparedStatement("removeTells");
             clearTells.setString(1, sender.getNick());
+            clearTells.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

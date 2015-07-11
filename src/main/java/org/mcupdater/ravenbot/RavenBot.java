@@ -1,15 +1,9 @@
 package org.mcupdater.ravenbot;
 
-import org.mcupdater.ravenbot.features.KickHandler;
-import org.mcupdater.ravenbot.features.Magic8Ball;
-import org.mcupdater.ravenbot.features.TellHandler;
+import org.mcupdater.ravenbot.features.*;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
-import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.MessageEvent;
-import org.pircbotx.hooks.events.PrivateMessageEvent;
-import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.io.IOException;
 import java.sql.*;
@@ -25,6 +19,12 @@ public class RavenBot {
 
     public static void main(String[] args) {
         instance = new RavenBot();
+        try {
+            instance.bot.startBot();
+        } catch (IOException | IrcException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public RavenBot() {
@@ -49,10 +49,38 @@ public class RavenBot {
                 .setLogin(settings.getLogin())
                 .setServerHostname(settings.getServer())
                 .setServerPort(settings.getPort())
-                .addListener(new RavenBot.IRCListener())
-                .addListener(new Magic8Ball())
+                .addListener(new DebugHandler())
+                .addListener(new Magic8BallHandler())
                 .addListener(new KickHandler())
-                .addListener(new TellHandler());
+                .addListener(new TellHandler())
+                .addListener(new YouTubeHandler())
+                .addListener(new TwitterHandler())
+                .addListener(new SearchHandler())
+                .addListener(new WatcherHandler())
+                .addListener(new QuoteHandler())
+                .addListener(new InfoHandler())
+        /*
+            YouTube lookup
+            Twitter lookup
+            update lastSeen
+            .tell
+            .google
+            .youtube
+            .info
+            .wiki
+            .down
+            .quote
+            .define
+            .urban
+            .curseforge
+            .seen
+            .help
+            .ann
+            .qlist
+            .ilist
+        */
+
+                ;
         if (!settings.getNsPassword().isEmpty()) {
             configBuilder.setNickservPassword(settings.getNsPassword());
         }
@@ -74,11 +102,7 @@ public class RavenBot {
             e.printStackTrace();
         }
         bot = new PircBotX(configBuilder.buildConfiguration());
-        try {
-            bot.startBot();
-        } catch (IOException | IrcException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Statements: " + preparedStatements.size());
     }
 
     public static RavenBot getInstance() {
@@ -154,47 +178,7 @@ public class RavenBot {
         return preparedStatements.get(statement);
     }
 
-    private class IRCListener extends ListenerAdapter {
-        private Random rng = new Random();
-
-        @Override
-        public void onMessage(final MessageEvent event) {
-            if (event.getMessage().startsWith(".ping")) {
-                event.respond("Pong!");
-                return;
-            }
-            /*
-            YouTube lookup
-            Twitter lookup
-            update lastSeen
-            .tell
-            .google
-            .youtube
-            .info
-            .wiki
-            .down
-            .quote
-            .define
-            .urban
-            .curseforge
-            .seen
-            .help
-            .ann
-            .qlist
-            .ilist
-
-             */
-        }
-
-        @Override
-        public void onPrivateMessage(final PrivateMessageEvent event) {
-            if (ops.contains(event.getUser().getNick())) {
-                event.respond("I obey!");
-
-            } else {
-                event.respond("You are not my master!");
-            }
-        }
-
+    public List<String> getOps() {
+        return ops;
     }
 }

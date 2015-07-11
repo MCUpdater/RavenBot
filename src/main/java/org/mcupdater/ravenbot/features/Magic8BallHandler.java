@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Magic8Ball extends ListenerAdapter {
+public class Magic8BallHandler extends ListenerAdapter {
     private List<String> responses = new ArrayList<>();
 
     private void initResponses() {
@@ -34,7 +34,7 @@ public class Magic8Ball extends ListenerAdapter {
         responses.add(Colors.RED + " Do not count on it.");
     }
 
-    public Magic8Ball() {
+    public Magic8BallHandler() {
         initResponses();
     }
 

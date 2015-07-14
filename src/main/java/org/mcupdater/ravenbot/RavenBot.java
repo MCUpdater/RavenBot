@@ -41,8 +41,8 @@ public class RavenBot {
             return;
         }
         loadOps();
-        System.out.println("RavenBot 2.0 - WOOT!");
-        Configuration.Builder<PircBotX> configBuilder = new Configuration.Builder()
+        System.out.println("RavenBot 2.0");
+        Configuration.Builder<PircBotX> configBuilder = new Configuration.Builder<>()
                 .setName(settings.getNick())
                 .setAutoNickChange(true)
                 .setRealName(settings.getRealName())
@@ -50,6 +50,7 @@ public class RavenBot {
                 .setServerHostname(settings.getServer())
                 .setServerPort(settings.getPort())
                 .addListener(new DebugHandler())
+                .addListener(new ControlHandler())
                 .addListener(new Magic8BallHandler())
                 .addListener(new KickHandler())
                 .addListener(new TellHandler())

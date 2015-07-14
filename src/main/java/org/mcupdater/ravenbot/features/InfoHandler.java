@@ -3,13 +3,14 @@ package org.mcupdater.ravenbot.features;
 import org.apache.commons.lang3.StringUtils;
 import org.mcupdater.ravenbot.RavenBot;
 import org.pircbotx.Colors;
+import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class InfoHandler extends ListenerAdapter
+public class InfoHandler extends ListenerAdapter<PircBotX>
 {
 
 	@Override

@@ -10,7 +10,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class TwitterHandler extends ListenerAdapter {
+public class TwitterHandler extends ListenerAdapter<PircBotX> {
 	Twitter twitter;
 
 	public TwitterHandler() {
@@ -35,10 +35,10 @@ public class TwitterHandler extends ListenerAdapter {
 	public void onMessage(final MessageEvent event) {
 		PircBotX bot = event.getBot();
 		String[] splitMessage = event.getMessage().split(" ");
-		for (int i = 0; i < splitMessage.length; i++) {
-			if (splitMessage[i].contains("twitter.com") && splitMessage[i].contains("/status/")) {
-				int index = splitMessage[i].lastIndexOf("/") + 1;
-				long status = Long.parseLong(splitMessage[i].substring(index));
+		for (String aSplitMessage : splitMessage) {
+			if (aSplitMessage.contains("twitter.com") && aSplitMessage.contains("/status/")) {
+				int index = aSplitMessage.lastIndexOf("/") + 1;
+				long status = Long.parseLong(aSplitMessage.substring(index));
 				try {
 					Status lookup = twitter.showStatus(status);
 					bot.sendIRC().action(event.getChannel().getName(), "found " + lookup.getUser().getScreenName() + ": " + lookup.getText());

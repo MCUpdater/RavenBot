@@ -10,7 +10,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class TellHandler extends ListenerAdapter {
+public class TellHandler extends ListenerAdapter<PircBotX> {
 
     @Override
     public void onMessage(final MessageEvent event) {

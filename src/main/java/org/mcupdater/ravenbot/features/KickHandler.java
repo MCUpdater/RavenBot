@@ -1,6 +1,7 @@
 package org.mcupdater.ravenbot.features;
 
 import org.mcupdater.ravenbot.RavenBot;
+import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.KickEvent;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class KickHandler extends ListenerAdapter {
+public class KickHandler extends ListenerAdapter<PircBotX> {
     private List<String> responses = new ArrayList<>();
 
     public void initResponses() {

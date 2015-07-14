@@ -1,6 +1,7 @@
 package org.mcupdater.ravenbot.features;
 
 import org.pircbotx.Colors;
+import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Magic8BallHandler extends ListenerAdapter {
+public class Magic8BallHandler extends ListenerAdapter<PircBotX> {
     private List<String> responses = new ArrayList<>();
 
     private void initResponses() {

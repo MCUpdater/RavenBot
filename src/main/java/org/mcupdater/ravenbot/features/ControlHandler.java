@@ -49,5 +49,19 @@ public class ControlHandler extends ListenerAdapter<PircBotX>
 				bot.sendIRC().notice(sender, "You cannot do that.");
 			}
 		}
+		if (splitMessage[0].equals("op")) {
+			if (isOp) {
+				try {
+					String newOp = splitMessage[1];
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		if (splitMessage[0].equals("deop")) {
+			if (isOp) {
+
+			}
+		}
 	}
 }

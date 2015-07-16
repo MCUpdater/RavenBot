@@ -1,5 +1,6 @@
 package org.mcupdater.ravenbot;
 
+@SuppressWarnings("SameParameterValue")
 public class Settings {
     private String nick;
     private String login;

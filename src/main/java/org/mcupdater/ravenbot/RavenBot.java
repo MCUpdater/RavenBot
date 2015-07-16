@@ -11,11 +11,11 @@ import java.util.*;
 
 public class RavenBot {
     private static RavenBot instance;
-    protected PircBotX bot;
-    protected Connection connection = null;
-    protected List<String> ops = new ArrayList<>();
-    protected Map<String, PreparedStatement> preparedStatements = new HashMap<>();
-    private Scanner scanner;
+    private PircBotX bot;
+    private Connection connection = null;
+    private final List<String> ops = new ArrayList<>();
+    private final Map<String, PreparedStatement> preparedStatements = new HashMap<>();
+    private final Scanner scanner;
 
     public static void main(String[] args) {
         instance = new RavenBot();

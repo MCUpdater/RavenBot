@@ -11,7 +11,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterHandler extends ListenerAdapter<PircBotX> {
-	Twitter twitter;
+	private final Twitter twitter;
 
 	public TwitterHandler() {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -41,7 +41,7 @@ public class TwitterHandler extends ListenerAdapter<PircBotX> {
 				long status = Long.parseLong(aSplitMessage.substring(index));
 				try {
 					Status lookup = twitter.showStatus(status);
-					bot.sendIRC().action(event.getChannel().getName(), "found " + lookup.getUser().getScreenName() + ": " + lookup.getText());
+					bot.sendIRC().message(event.getChannel().getName(), lookup.getCreatedAt() + " @" + lookup.getUser().getScreenName() + ": " + lookup.getText());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 public class KickHandler extends ListenerAdapter<PircBotX> {
-    private List<String> responses = new ArrayList<>();
+    private final List<String> responses = new ArrayList<>();
 
-    public void initResponses() {
+    private void initResponses() {
         responses.add("Meh...  I didn't like them anyway. :P");
         responses.add("That'll teach them!");
         responses.add("... and don't come back!");
@@ -24,7 +24,7 @@ public class KickHandler extends ListenerAdapter<PircBotX> {
         initResponses();
     }
 
-    public String getResponse() {
+    private String getResponse() {
         Random rng = new Random();
         return responses.get(rng.nextInt(responses.size()));
     }

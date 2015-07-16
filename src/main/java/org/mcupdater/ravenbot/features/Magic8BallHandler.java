@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Magic8BallHandler extends ListenerAdapter<PircBotX> {
-    private List<String> responses = new ArrayList<>();
+    private final List<String> responses = new ArrayList<>();
 
     private void initResponses() {
         responses.add(Colors.GREEN + " Signs point to yes.");
@@ -39,7 +39,7 @@ public class Magic8BallHandler extends ListenerAdapter<PircBotX> {
         initResponses();
     }
 
-    public String getResponse() {
+    private String getResponse() {
         Random rng = new Random();
         return responses.get(rng.nextInt(responses.size()));
     }

@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
-import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
@@ -21,15 +20,34 @@ public class SearchHandler extends ListenerAdapter<PircBotX> {
 
 	@Override
 	public void onMessage(final MessageEvent event) {
-		User sender = event.getUser();
-		if (event.getMessage().startsWith(".google")) {
-			String[] splitMessage = event.getMessage().split(" ");
-			event.respond(performSearch(null, StringUtils.join(splitMessage, " ", 1, splitMessage.length)));
+		String filter = null;
+		String[] splitMessage = event.getMessage().split(" ");
+		switch (splitMessage[0]) {
+			case ".google":
+			case ".g":
+				break;
+			case ".curseforge":
+			case ".cf":
+				filter = "site:minecraft.curseforge.com";
+				break;
+			case ".wiki":
+				filter = "wiki";
+				break;
+			case ".urban":
+				filter = "site:urbandictionary.com";
+				break;
+			case ".devbukkit":
+			case ".db":
+				filter = "site:dev.bukkit.org";
+				break;
+			case ".ann":
+				filter = "site:animenewsnetwork.com";
+				break;
+
+			default:
+				return;
 		}
-		if (event.getMessage().startsWith(".curseforge")) {
-			String[] splitMessage = event.getMessage().split(" ");
-			event.respond(performSearch("site:curseforge.com", StringUtils.join(splitMessage, " ", 1, splitMessage.length)));
-		}
+		event.respond(performSearch(filter, StringUtils.join(splitMessage, " ", 1, splitMessage.length)));
 	}
 
 	private String performSearch(String filter, String terms) {

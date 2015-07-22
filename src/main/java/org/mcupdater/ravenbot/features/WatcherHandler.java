@@ -1,15 +1,15 @@
 package org.mcupdater.ravenbot.features;
 
+import org.mcupdater.ravenbot.AbstractListener;
 import org.mcupdater.ravenbot.RavenBot;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class WatcherHandler extends ListenerAdapter<PircBotX> {
+public class WatcherHandler extends AbstractListener
+{
 
     @Override
     public void onMessage(final MessageEvent event) {
@@ -61,5 +61,10 @@ public class WatcherHandler extends ListenerAdapter<PircBotX> {
             duration.append("0s ");
         }
         return duration.toString();
+    }
+
+    @Override
+    protected void initCommands() {
+
     }
 }

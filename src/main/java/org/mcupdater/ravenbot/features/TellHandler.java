@@ -1,16 +1,17 @@
 package org.mcupdater.ravenbot.features;
 
 import org.apache.commons.lang3.StringUtils;
+import org.mcupdater.ravenbot.AbstractListener;
 import org.mcupdater.ravenbot.RavenBot;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class TellHandler extends ListenerAdapter<PircBotX> {
+public class TellHandler extends AbstractListener
+{
 
     @Override
     public void onMessage(final MessageEvent event) {
@@ -57,5 +58,10 @@ public class TellHandler extends ListenerAdapter<PircBotX> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void initCommands() {
+
     }
 }

@@ -1,7 +1,11 @@
 package org.mcupdater.ravenbot.features;
 
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
+import org.mcupdater.ravenbot.AbstractListener;
 
-public class YouTubeHandler extends ListenerAdapter<PircBotX> {
+public class YouTubeHandler extends AbstractListener
+{
+	@Override
+	protected void initCommands() {
+
+	}
 }

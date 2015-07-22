@@ -1,13 +1,12 @@
 package org.mcupdater.ravenbot.features;
 
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
+import org.mcupdater.ravenbot.AbstractListener;
 import org.pircbotx.hooks.WaitForQueue;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.WhoisEvent;
 
-public class DebugHandler extends ListenerAdapter<PircBotX>
+public class DebugHandler extends AbstractListener
 {
 
 	@Override
@@ -47,4 +46,9 @@ public class DebugHandler extends ListenerAdapter<PircBotX>
         }
     */
     }
+
+	@Override
+	protected void initCommands() {
+
+	}
 }

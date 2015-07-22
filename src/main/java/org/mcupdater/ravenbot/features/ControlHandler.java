@@ -1,13 +1,13 @@
 package org.mcupdater.ravenbot.features;
 
+import org.mcupdater.ravenbot.AbstractListener;
 import org.mcupdater.ravenbot.RavenBot;
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 import java.sql.PreparedStatement;
 
-public class ControlHandler extends ListenerAdapter<PircBotX>
+public class ControlHandler extends AbstractListener
 {
 	@Override
 	public void onPrivateMessage(final PrivateMessageEvent event) {
@@ -63,5 +63,10 @@ public class ControlHandler extends ListenerAdapter<PircBotX>
 
 			}
 		}
+	}
+
+	@Override
+	protected void initCommands() {
+
 	}
 }

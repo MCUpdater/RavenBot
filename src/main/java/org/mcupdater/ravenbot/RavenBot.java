@@ -60,6 +60,7 @@ public class RavenBot {
                 .addListener(new WatcherHandler())
                 .addListener(new QuoteHandler())
                 .addListener(new InfoHandler())
+                .addListener(new MinecraftHandler())
         /*
             YouTube lookup
             Twitter lookup

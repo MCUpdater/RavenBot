@@ -1,16 +1,17 @@
 package org.mcupdater.ravenbot.features;
 
+import org.mcupdater.ravenbot.AbstractListener;
 import org.mcupdater.ravenbot.Settings;
 import org.mcupdater.ravenbot.SettingsManager;
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class TwitterHandler extends ListenerAdapter<PircBotX> {
+public class TwitterHandler extends AbstractListener
+{
 	private final Twitter twitter;
 
 	public TwitterHandler() {
@@ -29,6 +30,11 @@ public class TwitterHandler extends ListenerAdapter<PircBotX> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void initCommands() {
+
 	}
 
 	@Override

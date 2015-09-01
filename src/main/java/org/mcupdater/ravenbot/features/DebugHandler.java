@@ -15,6 +15,7 @@ public class DebugHandler extends AbstractListener
 			event.respond("Pong!");
 		}
 		if (event.getMessage().startsWith(".whoami")) {
+			event.getUser().send().notice("UUID: " + event.getUser().getUserId().toString());
 			event.getUser().send().notice("Verified: " + event.getUser().isVerified() + "\n");
 			event.getUser().send().notice("Login: " + event.getUser().getLogin() + "\n");
 			event.getUser().send().notice("Real name: " + event.getUser().getRealName() + "\n");

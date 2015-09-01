@@ -12,6 +12,9 @@ public class Settings {
     private String twitCSecret;
     private String twitToken;
     private String twitTSecret;
+    private String googleID;
+    private String googleSecret;
+    private String youtubeKey;
 
     public String getNick() {
         return nick;
@@ -91,5 +94,29 @@ public class Settings {
 
     public void setTwitTSecret(String twitTSecret) {
         this.twitTSecret = twitTSecret;
+    }
+
+    public String getGoogleID() {
+        return googleID;
+    }
+
+    public void setGoogleID(String googleID) {
+        this.googleID = googleID;
+    }
+
+    public String getGoogleSecret() {
+        return googleSecret;
+    }
+
+    public void setGoogleSecret(String googleSecret) {
+        this.googleSecret = googleSecret;
+    }
+
+    public String getYoutubeKey() {
+        return youtubeKey;
+    }
+
+    public void setYoutubeKey(String youtubeKey) {
+        this.youtubeKey = youtubeKey;
     }
 }

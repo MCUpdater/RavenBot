@@ -3,11 +3,15 @@ package org.mcupdater.ravenbot;
 import org.mcupdater.ravenbot.features.*;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 import org.pircbotx.exception.IrcException;
+import org.pircbotx.hooks.WaitForQueue;
+import org.pircbotx.hooks.events.WhoisEvent;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class RavenBot {
     private static RavenBot instance;
@@ -16,6 +20,7 @@ public class RavenBot {
     private final List<String> ops = new ArrayList<>();
     private final Map<String, PreparedStatement> preparedStatements = new HashMap<>();
     private final Scanner scanner;
+	private Map<UUID,ExpiringToken> userCache = new HashMap<>();
 
     public static void main(String[] args) {
         instance = new RavenBot();
@@ -120,7 +125,7 @@ public class RavenBot {
                 ops.add(readOps.getString("name"));
             }
             if (rowCount == 0) {
-                System.out.print("Please enter the nick of the first person with op privileges for the bot:\n> ");
+                System.out.print("Please enter the primary nickserv name of the first person with op privileges for the bot:\n> ");
                 String op = scanner.nextLine();
                 ops.add(op);
                 preparedStatements.get("addOp").setString(1, op);
@@ -183,4 +188,56 @@ public class RavenBot {
     public List<String> getOps() {
         return ops;
     }
+
+    public boolean isOp(PircBotX sourceBot, User user) {
+	    String nsRegistration = "";
+	    if (userCache.containsKey(user.getUserId()) && userCache.get(user.getUserId()).getExpiration().after(Calendar.getInstance().getTime())) {
+		    nsRegistration = userCache.get(user.getUserId()).getValue();
+		    System.out.println(user.getNick() + " is cached");
+	    } else {
+		    System.out.println(user.getNick() + " is NOT cached");
+		    try {
+			    sourceBot.sendRaw().rawLine("WHOIS " + user.getNick() + " " + user.getNick());
+			    WaitForQueue waitForQueue = new WaitForQueue(sourceBot);
+			    WhoisEvent whoisEvent = waitForQueue.waitFor(WhoisEvent.class);
+			    System.out.println("Debug: " + whoisEvent.getNick());
+			    waitForQueue.close();
+			    nsRegistration = whoisEvent.getRegisteredAs();
+		    } catch (Exception e) {
+			    e.printStackTrace();
+		    }
+		    System.out.println("NickServ registration: " + nsRegistration);
+		    if (!nsRegistration.isEmpty()) {
+			    Calendar future = Calendar.getInstance();
+			    future.add(Calendar.MINUTE,5);
+			    userCache.put(user.getUserId(), new ExpiringToken(future.getTime(),nsRegistration));
+			    System.out.println(user.getUserId().toString() + " added to cache: " + nsRegistration + " expires at " + future.toString());
+		    }
+	    }
+	    if (getOps().contains(nsRegistration)) {
+		    return true;
+	    } else {
+		    return false;
+	    }
+    }
+
+	private class ExpiringToken
+	{
+		private final Date expiration;
+		private final String value;
+
+		private ExpiringToken(Date expiration, String value) {
+			this.expiration = expiration;
+			this.value = value;
+		}
+
+		public Date getExpiration() {
+			return expiration;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+	}
 }

@@ -13,7 +13,7 @@ public class ControlHandler extends AbstractListener
 	public void onPrivateMessage(final PrivateMessageEvent event) {
 		PircBotX bot = event.getBot();
 		String sender = event.getUser().getNick();
-		boolean isOp = RavenBot.getInstance().getOps().contains(sender);
+		boolean isOp = RavenBot.getInstance().isOp(event.getBot(), event.getUser());
 		String[] splitMessage = event.getMessage().split(" ");
 		if (splitMessage[0].equals("join")) {
 			if (isOp) {

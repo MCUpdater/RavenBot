@@ -41,7 +41,8 @@ public class YouTubeHandler extends AbstractListener
 		for (String aSplitMessage : splitMessage) {
 			if (aSplitMessage.contains("youtube.com") && aSplitMessage.contains("v=")) {
 				int index = aSplitMessage.lastIndexOf("v=") + 2;
-				String videoId = aSplitMessage.substring(index, aSplitMessage.indexOf("&",index));
+				String videoId = (aSplitMessage.indexOf("&",index) > -1 ? aSplitMessage.substring(index, aSplitMessage.indexOf("&",index)) : aSplitMessage.substring(index));
+				System.out.println(videoId);
 				try {
 					YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
 					videos.setKey(SettingsManager.getInstance().getSettings().getYoutubeKey());

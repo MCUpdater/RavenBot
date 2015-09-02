@@ -8,4 +8,6 @@ public class MinecraftHandler extends AbstractListener
 	protected void initCommands() {
 
 	}
+
+	//TODO: Implement MinecraftHandler
 }

@@ -8,4 +8,6 @@ public class QuoteHandler extends AbstractListener
 	protected void initCommands() {
 
 	}
+
+	//TODO: Implement QuoteHandler
 }

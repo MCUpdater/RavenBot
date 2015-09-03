@@ -47,13 +47,12 @@ public class RavenBot {
         }
         loadOps();
         System.out.println("RavenBot 2.0");
-        Configuration.Builder<PircBotX> configBuilder = new Configuration.Builder<>()
+        Configuration.Builder configBuilder = new Configuration.Builder()
                 .setName(settings.getNick())
                 .setAutoNickChange(true)
                 .setRealName(settings.getRealName())
                 .setLogin(settings.getLogin())
-                .setServerHostname(settings.getServer())
-                .setServerPort(settings.getPort())
+		        .addServer(settings.getServer(), settings.getPort())
                 .addListener(new DebugHandler())
                 .addListener(new ControlHandler())
                 .addListener(new Magic8BallHandler())
@@ -196,17 +195,16 @@ public class RavenBot {
 		    System.out.println(user.getNick() + " is cached");
 	    } else {
 		    System.out.println(user.getNick() + " is NOT cached");
+		    user.isVerified();
 		    try {
 			    sourceBot.sendRaw().rawLine("WHOIS " + user.getNick() + " " + user.getNick());
 			    WaitForQueue waitForQueue = new WaitForQueue(sourceBot);
 			    WhoisEvent whoisEvent = waitForQueue.waitFor(WhoisEvent.class);
-			    System.out.println("Debug: " + whoisEvent.getNick());
 			    waitForQueue.close();
 			    nsRegistration = whoisEvent.getRegisteredAs();
 		    } catch (Exception e) {
 			    e.printStackTrace();
 		    }
-		    System.out.println("NickServ registration: " + nsRegistration);
 		    if (!nsRegistration.isEmpty()) {
 			    Calendar future = Calendar.getInstance();
 			    future.add(Calendar.MINUTE,5);

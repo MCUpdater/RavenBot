@@ -2,14 +2,19 @@ apply plugin: 'java'
 
 repositories {
     mavenCentral()
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 
 dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'org.pircbotx:pircbotx:2.0.1'
+    compile 'org.pircbotx:pircbotx:2.1-SNAPSHOT'
     compile 'org.xerial:sqlite-jdbc:3.8.7'
     compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'com.google.apis:google-api-services-youtube:v3-rev143-1.20.0'
     compile 'com.google.oauth-client:google-oauth-client:1.20.0'
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.20.0'
+    compile 'org.slf4j:slf4j-simple:1.7.12'
 }

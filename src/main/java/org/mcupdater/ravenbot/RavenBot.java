@@ -21,6 +21,7 @@ public class RavenBot {
     private final Map<String, PreparedStatement> preparedStatements = new HashMap<>();
     private final Scanner scanner;
 	private Map<UUID,ExpiringToken> userCache = new HashMap<>();
+    private boolean keepAlive;
 
     public static void main(String[] args) {
         instance = new RavenBot();
@@ -33,6 +34,7 @@ public class RavenBot {
     }
 
     public RavenBot() {
+        keepAlive = true;
         scanner = new Scanner(System.in);
         Settings settings = SettingsManager.getInstance().getSettings();
         try {
@@ -53,6 +55,7 @@ public class RavenBot {
                 .setRealName(settings.getRealName())
                 .setLogin(settings.getLogin())
 		        .addServer(settings.getServer(), settings.getPort())
+		        .setAutoReconnect(true)
                 .addListener(new DebugHandler())
                 .addListener(new ControlHandler())
                 .addListener(new Magic8BallHandler())
@@ -109,6 +112,13 @@ public class RavenBot {
         }
         bot = new PircBotX(configBuilder.buildConfiguration());
         System.out.println("Statements: " + preparedStatements.size());
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            @Override
+            public void run() {
+                instance.setKeepAlive(false);
+                bot.close();
+            }
+        });
     }
 
     public static RavenBot getInstance() {
@@ -212,12 +222,16 @@ public class RavenBot {
 			    System.out.println(user.getUserId().toString() + " added to cache: " + nsRegistration + " expires at " + future.toString());
 		    }
 	    }
-	    if (getOps().contains(nsRegistration)) {
-		    return true;
-	    } else {
-		    return false;
-	    }
+	    return (getOps().contains(nsRegistration));
     }
+
+	public boolean isKeepAlive() {
+		return keepAlive;
+	}
+
+	public void setKeepAlive(boolean keepAlive) {
+		this.keepAlive = keepAlive;
+	}
 
 	private class ExpiringToken
 	{

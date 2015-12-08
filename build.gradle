@@ -18,3 +18,11 @@ dependencies {
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.20.0'
     compile 'org.slf4j:slf4j-simple:1.7.12'
 }
+
+jar {
+    archiveName = 'RavenBot.jar'
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest {
+        attributes "Main-Class": 'org.mcupdater.ravenbot.RavenBot'
+    }
+}

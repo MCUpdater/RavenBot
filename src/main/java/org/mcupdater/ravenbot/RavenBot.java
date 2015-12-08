@@ -69,22 +69,8 @@ public class RavenBot {
                 .addListener(new InfoHandler())
                 .addListener(new MinecraftHandler())
         /*
-            YouTube lookup
-            Twitter lookup
-            update lastSeen
-            .tell
-            .google
-            .youtube
-            .info
-            .wiki
             .down
-            .quote
-            .define
-            .urban
-            .curseforge
-            .seen
             .help
-            .ann
             .qlist
             .ilist
         */

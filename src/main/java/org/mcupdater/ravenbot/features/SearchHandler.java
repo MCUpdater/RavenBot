@@ -43,6 +43,13 @@ public class SearchHandler extends AbstractListener
 			case ".ann":
 				filter = "site:animenewsnetwork.com";
 				break;
+			case ".github":
+			case ".gh":
+				filter = "site:github.com";
+				break;
+			case ".define":
+				filter = "site:en.wiktionary.com";
+				break;
 			default:
 				return;
 		}

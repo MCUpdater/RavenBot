@@ -14,8 +14,8 @@ public class InfoHandler extends AbstractListener
 
 	@Override
 	public void onMessage(final MessageEvent event) {
-		if (event.getMessage().startsWith(".info")) {
-			String[] splitMessage = event.getMessage().split(" ");
+		String[] splitMessage = event.getMessage().split(" ");
+		if (splitMessage[0].equals(".info") || splitMessage[0].equals(".i") ) {
 			if (splitMessage.length == 1) {
 				event.respond("No key specified.");
 				return;

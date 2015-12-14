@@ -22,7 +22,12 @@ public class WatcherHandler extends AbstractListener
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (event.getMessage().startsWith(".seen")) {
+        super.onMessage(event);
+    }
+
+    @Override
+    public void handleCommand(String sender, MessageEvent event, String command, String[] args) {
+        if (command.equals(".seen")) {
             try {
                 PreparedStatement getSeen = RavenBot.getInstance().getPreparedStatement("getLastSeen");
                 String[] splitMessage = event.getMessage().split(" ");

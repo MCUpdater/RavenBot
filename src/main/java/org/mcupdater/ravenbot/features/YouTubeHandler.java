@@ -38,12 +38,10 @@ public class YouTubeHandler extends AbstractListener
 	}
 
 	@Override
-	public void onMessage(final MessageEvent event) {
-		PircBotX bot = event.getBot();
-		String[] splitMessage = event.getMessage().split(" ");
-		if (splitMessage[0].equals(".youtube") || splitMessage[0].equals(".yt")) {
+	public void handleCommand(String sender, MessageEvent event, String command, String[] args) {
+		if (command.equals(".youtube") || command.equals(".yt")) {
 			// Perform search
-			String query = StringUtils.join(splitMessage, " ", 1, splitMessage.length);
+			String query = StringUtils.join(args, " ");
 			try {
 				YouTube.Search.List search = youtube.search().list("id,snippet");
 				search.setKey(SettingsManager.getInstance().getSettings().getYoutubeKey());
@@ -55,34 +53,39 @@ public class YouTubeHandler extends AbstractListener
 				List<SearchResult> searchResults = searchListResponse.getItems();
 				if (searchResults != null) {
 					SearchResult firstResult = searchResults.get(0);
-					bot.sendIRC().message(event.getChannel().getName(), formatSearchResult(firstResult));
+					event.getBot().sendIRC().message(event.getChannel().getName(), formatSearchResult(firstResult));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else {
-			for (String aSplitMessage : splitMessage) {
-				if (aSplitMessage.contains("youtube.com") && aSplitMessage.contains("v=")) {
-					int index = aSplitMessage.lastIndexOf("v=") + 2;
-					String videoId = (aSplitMessage.indexOf("&",index) > -1 ? aSplitMessage.substring(index, aSplitMessage.indexOf("&",index)) : aSplitMessage.substring(index));
-					System.out.println(videoId);
-					try {
-						YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
-						videos.setKey(SettingsManager.getInstance().getSettings().getYoutubeKey());
-						videos.setId(videoId);
+		}
+	}
 
-						VideoListResponse videoListResponse = videos.execute();
-						List<Video> videoList = videoListResponse.getItems();
-						if (videoList != null) {
-							Video firstResult = videoList.get(0);
-							bot.sendIRC().message(event.getChannel().getName(), formatResult(firstResult));
-						} else {
-							bot.sendIRC().message(event.getChannel().getName(), "Could not find information about that video");
-						}
+	@Override
+	public void onMessage(final MessageEvent event) {
+		PircBotX bot = event.getBot();
+		String[] splitMessage = event.getMessage().split(" ");
+		for (String aSplitMessage : splitMessage) {
+			if (aSplitMessage.contains("youtube.com") && aSplitMessage.contains("v=")) {
+				int index = aSplitMessage.lastIndexOf("v=") + 2;
+				String videoId = (aSplitMessage.indexOf("&",index) > -1 ? aSplitMessage.substring(index, aSplitMessage.indexOf("&",index)) : aSplitMessage.substring(index));
+				System.out.println(videoId);
+				try {
+					YouTube.Videos.List videos = youtube.videos().list("id,snippet,contentDetails");
+					videos.setKey(SettingsManager.getInstance().getSettings().getYoutubeKey());
+					videos.setId(videoId);
 
-					} catch (Exception e) {
-						e.printStackTrace();
+					VideoListResponse videoListResponse = videos.execute();
+					List<Video> videoList = videoListResponse.getItems();
+					if (videoList != null) {
+						Video firstResult = videoList.get(0);
+						bot.sendIRC().message(event.getChannel().getName(), formatResult(firstResult));
+					} else {
+						bot.sendIRC().message(event.getChannel().getName(), "Could not find information about that video");
 					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}

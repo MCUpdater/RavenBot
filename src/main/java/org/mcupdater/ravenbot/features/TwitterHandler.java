@@ -33,9 +33,10 @@ public class TwitterHandler extends AbstractListener
 	}
 
 	@Override
-	protected void initCommands() {
+	protected void initCommands() {}
 
-	}
+	@Override
+	public void handleCommand(String sender, MessageEvent event, String command, String[] args) {}
 
 	@Override
 	public void onMessage(final MessageEvent event) {

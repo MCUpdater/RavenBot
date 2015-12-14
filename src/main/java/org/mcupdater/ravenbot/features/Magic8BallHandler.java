@@ -2,6 +2,7 @@ package org.mcupdater.ravenbot.features;
 
 import org.mcupdater.ravenbot.AbstractListener;
 import org.pircbotx.Colors;
+import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import java.util.ArrayList;
@@ -44,15 +45,16 @@ public class Magic8BallHandler extends AbstractListener
 
     }
 
+    @Override
+    public void handleCommand(String sender, MessageEvent event, String command, String[] args) {
+        if (command.equals(".8ball")) {
+            event.respond(getResponse());
+        }
+    }
+
     private String getResponse() {
         Random rng = new Random();
         return responses.get(rng.nextInt(responses.size()));
     }
 
-    @Override
-    public void onGenericMessage(final GenericMessageEvent event) {
-        if (event.getMessage().startsWith(".8ball")) {
-            event.respond(getResponse());
-        }
-    }
 }

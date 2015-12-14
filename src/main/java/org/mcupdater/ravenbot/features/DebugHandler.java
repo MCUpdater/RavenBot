@@ -3,18 +3,17 @@ package org.mcupdater.ravenbot.features;
 import org.mcupdater.ravenbot.AbstractListener;
 import org.pircbotx.hooks.WaitForQueue;
 import org.pircbotx.hooks.events.MessageEvent;
-import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.WhoisEvent;
 
 public class DebugHandler extends AbstractListener
 {
 
 	@Override
-	public void onMessage(final MessageEvent event) {
-		if (event.getMessage().startsWith(".ping")) {
+	public void handleCommand(String sender, MessageEvent event, String command, String[] args) {
+		if (command.equals(".ping")) {
 			event.respond("Pong!");
 		}
-		if (event.getMessage().startsWith(".whoami")) {
+		if (command.equals(".whoami")) {
 			event.getUser().send().notice("UUID: " + event.getUser().getUserId().toString());
 			event.getUser().send().notice("Verified: " + event.getUser().isVerified() + "\n");
 			event.getUser().send().notice("Login: " + event.getUser().getLogin() + "\n");
@@ -37,19 +36,8 @@ public class DebugHandler extends AbstractListener
 	}
 
 	@Override
-	public void onPrivateMessage(final PrivateMessageEvent event) {
-	/*
-        if (RavenBot.getInstance().getOps().contains(event.getUser().getNick())) {
-            event.respond("I obey!");
-
-        } else {
-            event.respond("You are not my master!");
-        }
-    */
-    }
-
-	@Override
 	protected void initCommands() {
 
 	}
+
 }

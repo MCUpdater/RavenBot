@@ -13,15 +13,14 @@ public class InfoHandler extends AbstractListener
 {
 
 	@Override
-	public void onMessage(final MessageEvent event) {
-		String[] splitMessage = event.getMessage().split(" ");
-		if (splitMessage[0].equals(".info") || splitMessage[0].equals(".i") ) {
-			if (splitMessage.length == 1) {
+	public void handleCommand(String sender, final MessageEvent event, String command, String[] args) {
+		if (command.equals(".info") || command.equals(".i") ) {
+			if (args.length == 0) {
 				event.respond("No key specified.");
 				return;
 			}
-			if (splitMessage.length == 2) {
-				String key = splitMessage[1];
+			if (args.length == 1) {
+				String key = args[0];
 				try {
 					PreparedStatement getInfo = RavenBot.getInstance().getPreparedStatement("getInfo");
 					getInfo.setString(1, key);
@@ -35,9 +34,9 @@ public class InfoHandler extends AbstractListener
 					e.printStackTrace();
 				}
 			}
-			if (splitMessage.length > 2) {
-				String key = splitMessage[1];
-				String data = StringUtils.join(splitMessage, " ", 2, splitMessage.length);
+			if (args.length > 1) {
+				String key = args[0];
+				String data = StringUtils.join(args, " ", 1, args.length);
 				try {
 					PreparedStatement updateInfo = RavenBot.getInstance().getPreparedStatement("updateInfo");
 					updateInfo.setString(1, key);

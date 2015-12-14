@@ -6,6 +6,7 @@ import org.mcupdater.ravenbot.RavenBot;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.WaitForQueue;
+import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.WhoisEvent;
 
@@ -110,6 +111,11 @@ public class ControlHandler extends AbstractListener
 
 	@Override
 	protected void initCommands() {
+
+	}
+
+	@Override
+	public void handleCommand(String sender, MessageEvent event, String command, String[] args) {
 
 	}
 }

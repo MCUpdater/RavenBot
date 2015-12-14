@@ -18,10 +18,9 @@ public class QuoteHandler extends AbstractListener
 	}
 
 	@Override
-	public void onMessage(final MessageEvent event) {
-		String[] splitMessage = event.getMessage().split(" ");
-		if (splitMessage[0].equals(".quote") || splitMessage[0].equals(".q")) {
-			if (splitMessage.length == 1) {
+	public void handleCommand(String sender, final MessageEvent event, String command, String[] args) {
+		if (command.equals(".quote") || command.equals(".q")) {
+			if (args.length == 0) {
 				try {
 					PreparedStatement getAnyQuote = RavenBot.getInstance().getPreparedStatement("getAnyQuote");
 					ResultSet results = getAnyQuote.executeQuery();
@@ -33,8 +32,8 @@ public class QuoteHandler extends AbstractListener
 					e.printStackTrace();
 				}
 			}
-			if (splitMessage.length == 2) {
-				String key = splitMessage[1];
+			if (args.length == 1) {
+				String key = args[0];
 				try {
 					PreparedStatement getQuote = RavenBot.getInstance().getPreparedStatement("getUserQuote");
 					getQuote.setString(1, key);
@@ -48,9 +47,9 @@ public class QuoteHandler extends AbstractListener
 					e.printStackTrace();
 				}
 			}
-			if (splitMessage.length > 2) {
-				String key = splitMessage[1];
-				String data = StringUtils.join(splitMessage, " ", 2, splitMessage.length);
+			if (args.length > 1) {
+				String key = args[0];
+				String data = StringUtils.join(args, " ", 1, args.length);
 				try {
 					PreparedStatement addQuote = RavenBot.getInstance().getPreparedStatement("addQuote");
 					addQuote.setString(1, key);

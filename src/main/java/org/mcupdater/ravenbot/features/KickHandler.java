@@ -2,13 +2,15 @@ package org.mcupdater.ravenbot.features;
 
 import org.mcupdater.ravenbot.AbstractListener;
 import org.mcupdater.ravenbot.RavenBot;
+import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.KickEvent;
+import org.pircbotx.hooks.events.MessageEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class KickHandler extends AbstractListener
+public class KickHandler extends ListenerAdapter
 {
     private final List<String> responses = new ArrayList<>();
 
@@ -22,11 +24,6 @@ public class KickHandler extends AbstractListener
 
     public KickHandler() {
         initResponses();
-    }
-
-    @Override
-    protected void initCommands() {
-
     }
 
     private String getResponse() {

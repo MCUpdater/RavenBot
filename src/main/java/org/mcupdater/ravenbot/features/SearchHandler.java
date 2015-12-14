@@ -19,10 +19,9 @@ public class SearchHandler extends AbstractListener
 {
 
 	@Override
-	public void onMessage(final MessageEvent event) {
+	public void handleCommand(String sender, MessageEvent event, String command, String[] args) {
 		String filter = null;
-		String[] splitMessage = event.getMessage().split(" ");
-		switch (splitMessage[0]) {
+		switch (command) {
 			case ".google":
 			case ".g":
 				break;
@@ -53,7 +52,7 @@ public class SearchHandler extends AbstractListener
 			default:
 				return;
 		}
-		event.respond(performSearch(filter, StringUtils.join(splitMessage, " ", 1, splitMessage.length)));
+		event.respond(performSearch(filter, StringUtils.join(args, " ")));
 	}
 
 	private String performSearch(String filter, String terms) {
@@ -90,4 +89,5 @@ public class SearchHandler extends AbstractListener
 	protected void initCommands() {
 
 	}
+
 }

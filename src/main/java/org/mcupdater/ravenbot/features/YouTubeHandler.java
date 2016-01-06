@@ -63,6 +63,7 @@ public class YouTubeHandler extends AbstractListener
 
 	@Override
 	public void onMessage(final MessageEvent event) {
+		super.onMessage(event);
 		PircBotX bot = event.getBot();
 		String[] splitMessage = event.getMessage().split(" ");
 		for (String aSplitMessage : splitMessage) {

@@ -1,5 +1,7 @@
 *.class
 *.iml
+*.db
+*.json
 
 # Mobile Tools for Java (J2ME)
 # Package Files #
@@ -8,3 +10,5 @@
 hs_err_pid*
 
 .idea/
+.gradle/
+build/
